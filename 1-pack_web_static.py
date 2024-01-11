@@ -1,28 +1,34 @@
 #!/usr/bin/python3
-"""
-This module provides a function to create a .tgz archive from web_static folder
-"""
-
-from fabric.api import local
+import os
 from datetime import datetime
+from fabric.api import local, runs_once
 
 
+@runs_once
 def do_pack():
-    """Create a tar gzipped archive of the directory web_static."""
-    # obtain the current date and time
-    now = datetime.now().strftime("%Y%m%d%H%M%S")
+    """Creates and compresses an archive of web_static directory."""
+    try:
+        # Get the current timestamp for the archive name.
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
 
-    # Construct path where archive will be saved
-    archive_path = "versions/web_static_{}.tgz".format(now)
+        # Create archive directory if it doesn't exist.
+        if not os.path.isdir('versions'):
+            os.mkdir('versions')
 
-    # use fabric function to create directory if it doesn't exist
-    local("mkdir -p versions")
+        # Create the archive name.
+        archive_name = f"versions/web_static_{timestamp}.tgz"
 
-    # Use tar command to create a compresses archive
-    archived = local("tar -cvzf {} web_static".format(archive_path))
+        # Compress the contents of the web_static directory into the archive.
+        print(f"Packing web_static to {archive_name}")
+        local(f'tar -czvf {archive_name} web_static')
 
-    # Check archive Creation Status
-    if archived.return_code != 0:
+        # Check if the archive was created successfully.
+        if os.path.isfile(archive_name):
+            archive_size = os.stat(archive_name).st_size
+            print(f"web_static packed: {archive_name} -> {archive_size} Bytes")
+            return archive_name
+        else:
+            return None
+    except OSError as e:
+        print(f"Error: {e}")
         return None
-    else:
-        return archive_path
