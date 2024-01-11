@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# sets up my web servers for the deployment of web_static
+# script sets up my web servers for the deployment of web_static
 
-# Install Nginx if not already installed
+# Install Nginx 
 sudo apt-get update
 sudo apt-get install -y nginx
 
-# Create folders if not already exists
+# create folders 
 sudo mkdir -p /data/web_static/shared/
 sudo mkdir -p /data/web_static/releases/test/
 
-# Create a fake HTML file for testing
+# create a fake HTML 
 echo "<html>
   <head>
   </head>
