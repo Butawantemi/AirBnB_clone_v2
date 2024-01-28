@@ -8,13 +8,12 @@ from datetime import datetime
 
 
 # Set the host IP addresses for web-01 && web-02
-env.hosts = ['18.234.105.167', '100.25.222.179']
+env.hosts = ['34.229.136.14', '100.25.129.163']
 env.user = "ubuntu"
 
 
 def do_pack():
     """Create a tar gzipped archive of the directory web_static."""
-    # obtain the current date and time
     now = datetime.now().strftime("%Y%m%d%H%M%S")
 
     # Construct path where archive will be saved

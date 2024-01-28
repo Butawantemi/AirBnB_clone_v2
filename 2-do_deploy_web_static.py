@@ -1,33 +1,29 @@
 #!/usr/bin/python3
-"""
-This fabfile distributes an archive to my web servers
-"""
 
 import os
 from fabric.api import *
 from datetime import datetime
 
 
-# Set the host IP addresses for web-01 && web-02
-env.hosts = ['18.234.105.167', '100.25.222.179']
+# set the host IP addresses for web-01 && web-02
+env.hosts = ['34.229.136.14', '100.25.129.163']
 env.user = "ubuntu"
 
 
 def do_pack():
     """Create a tar gzipped archive of the directory web_static."""
-    # obtain the current date and time
     now = datetime.now().strftime("%Y%m%d%H%M%S")
 
-    # Construct path where archive will be saved
+    # construct path where archive will be saved
     archive_path = "versions/web_static_{}.tgz".format(now)
 
     # use fabric function to create directory if it doesn't exist
     local("mkdir -p versions")
 
-    # Use tar command to create a compresses archive
+    # use tar command to create a compresses archive
     archived = local("tar -cvzf {} web_static".format(archive_path))
 
-    # Check archive Creation Status
+    # check archive Creation Status
     if archived.return_code != 0:
         return None
     else:
